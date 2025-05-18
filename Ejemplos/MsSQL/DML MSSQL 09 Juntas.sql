@@ -27,13 +27,14 @@ inner join titulo_autor as ta on ta.autor_id = a.autor_id
 inner join titulos as t on t.titulo_id = ta.titulo_id
 
 -- mostrar los cargos y sus empleados 
--- inclusive aquellos que no tienen empleados
+-- inclusive aquellos cargos que no tienen empleados
 select *
 from cargos
 left outer join empleados on cargos.cargo_id = empleados.cargo_id
 order by cargo_descripcion
 
--- como las columnas de la tabla derecha pueden traer nulos operar esas columnas con isnull
+-- como las columnas de la tabla derecha pueden traer nulos 
+-- operar esas columnas con isnull
 select cargos.cargo_id, cargo_descripcion, isnull(empleado_id,'S.E.') as empleado_id
 from cargos
 left outer join empleados on cargos.cargo_id = empleados.cargo_id
@@ -84,7 +85,8 @@ right outer join cargos c on c.cargo_id = e.cargo_id
 inner join editoriales d on d.editorial_id = e.editorial_id
 
 -- Informar todos los autores y todos los títulos
-select isnull(a.autor_id,'-') as autor_id, isnull(autor_nombre,'') autor_nombre, isnull(autor_apellido,'') autor_apellido, 
+select isnull(a.autor_id,'-') as autor_id, 
+	isnull(autor_nombre,'') autor_nombre, isnull(autor_apellido,'') autor_apellido, 
 	isnull(titulo,'') as titulo, isnull(genero,'') genero
 from autores as a
 full join titulo_autor as ta on ta.autor_id = a.autor_id
@@ -99,4 +101,5 @@ select cargo_descripcion,
 	fecha_contratacion
 from cargos as c
 left outer join empleados as e on c.cargo_id = e.cargo_id
-and e.fecha_contratacion between '20110201' and '20120331'
+where e.fecha_contratacion between '20110201' and '20120331'
+or fecha_contratacion is null

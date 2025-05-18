@@ -43,7 +43,7 @@ group by e.cargo_id, cargo_descripcion
 order by COUNT(*) desc
 
 -- informar cuantos empleados fueron contratados cada año
-SELECT year(fecha_contratacion), COUNT(*)
+SELECT year(fecha_contratacion) as año, COUNT(*) as cantidad
 FROM empleados
 GROUP BY year(fecha_contratacion)
 
@@ -54,7 +54,7 @@ where e.cargo_id = c.cargo_id
 GROUP BY e.cargo_id
 
 -- informar cuales años se han contratado mas de cuatro empleado
-SELECT year(fecha_contratacion), COUNT(*)
+SELECT year(fecha_contratacion) as año, COUNT(*) as cantidad
 FROM empleados
 GROUP BY year(fecha_contratacion)
 HAVING COUNT(*) > 4
