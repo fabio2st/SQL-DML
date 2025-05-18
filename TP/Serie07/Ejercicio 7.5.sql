@@ -10,7 +10,7 @@ select *
 from ventas
 
 
-SELECT top 3 genero,'Total ventas' = SUM(cantidad*precio), sum(cantidad)
+SELECT top 3 genero,'Total ventas' = SUM(cantidad*precio) --, sum(cantidad)
 FROM titulos,ventas
 WHERE titulos.titulo_id = ventas.titulo_id
 GROUP BY genero

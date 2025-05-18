@@ -2,6 +2,11 @@ use editorial
 
 /* 8.1 	Mostrar los tres primeros géneros más vendidos. 
 Mostrar género y total de ventas ordenado por mayor total de venta. */
+SELECT top 3 genero,'Total ventas' = SUM(cantidad*precio) --, sum(cantidad)
+FROM titulos,ventas
+WHERE titulos.titulo_id = ventas.titulo_id
+GROUP BY genero
+ORDER BY 'Total ventas' DESC
 
 SELECT TOP 3 genero, total=SUM(cantidad*precio)
 FROM titulos as t
@@ -13,6 +18,14 @@ go
 /*8.2. Informar las ventas a 60 días. Mostrar el id de título,
  el título y el total de ventas
 (cantidad por precio). Renombrar a la columna calculada.*/
+select *
+from titulos
+
+select *
+from ventas
+where forma_pago = '60 días'
+
+
 select t.titulo_id, titulo, sum(cantidad*precio) as total_venta
 from titulos as t
 inner join ventas as v on v.titulo_id = t.titulo_id
@@ -27,6 +40,7 @@ select autor_nombre, count(distinct genero) as cantidad
 from autores as a
 inner join titulo_autor as ta on a.autor_id = ta.autor_id
 inner join titulos as t on ta.titulo_id = t.titulo_id
+--order by a.autor_id
 group by a.autor_id, autor_nombre
 having count(distinct genero) > 1
 order by cantidad desc
@@ -47,17 +61,16 @@ fecha de orden y cantidad, si no tienen venta al menos
 mostrar una fila que indique la cantidad en 0. 
 Ordenar por título y mayor cantidad vendida primero. */
 
-select v.titulo_id, t.titulo, fecha_orden, sum(cantidad) as total
---, v.almacen_id
-from ventas as v right join titulos as t on t.titulo_id = v.titulo_id
-group by v.titulo_id, t.titulo, fecha_orden
-order by titulo, total desc
+select t.titulo_id, t.titulo, fecha_orden, ISNULL( cantidad, 0) as ventas_cantidad
+from titulos as t 
+left join ventas as v on t.titulo_id = v.titulo_id
+order by titulo, cantidad desc
 
+select t.titulo_id, titulo, fecha_orden, isnull(cantidad, 0) as ventas_cantidad
+from ventas as v 
+right join titulos as t on t.titulo_id = v.titulo_id
+order by titulo, ventas_cantidad desc
 
-select v.titulo_id, t.titulo, fecha_orden, sum(cantidad) as total
-from titulos as t left join ventas as v on t.titulo_id = v.titulo_id
-group by v.titulo_id, t.titulo, fecha_orden
-order by titulo, total desc
 
 select *
 from ventas
@@ -81,13 +94,16 @@ corresponden de la editorial 'New Moon Books',
 si algún cargo está vacante informar como 'Vacante' en apellido.
 Mostrar descripción del cargo, apellido y nombre. 
 Ordenar por descripción del cargo, apellido y nombre */
---select * from cargos
-select isnull(e.apellido,'Vacante') as apellido, e.nombre
+select * from cargos
+
+
+select isnull(e.apellido,'Vacante') as apellido
+	, ISNULL(e.nombre,'---') AS nombre
 	, d.editorial_nombre
 	,c.cargo_descripcion
 from empleados e
 inner join editoriales d on d.editorial_id = e.editorial_id 
-	and d.editorial_nombre = 'New Moon Books'
+and d.editorial_nombre = 'New Moon Books'
 right outer join cargos c on c.cargo_id = e.cargo_id
 --where d.editorial_nombre = 'New Moon Books'
 order by c.cargo_descripcion, apellido, e.nombre
@@ -98,7 +114,7 @@ aún. Mostrar nombre y apellido del autor y cantidad.
 Ordenar por cantidad mayor primero, apellido y nombre */
 
 select autor_nombre, autor_apellido
-	, COUNT(ta.autor_id) as cantidad
+	, COUNT(ta.titulo_id) as cantidad
 	--, ta.autor_id
 from autores as a
 left join titulo_autor as ta on ta.autor_id = a.autor_id
@@ -108,7 +124,7 @@ order by cantidad desc, autor_apellido, autor_nombre
 /* 8.8. ¿Informar cuantos títulos “Is Anger the Enemy?” 
 vendió cada almacén. Si un almacén no tuvo ventas del mismo 
 informar con un cero. Mostrar código de almacén y cantidad*/
-
+--select *
 select a.almacen_id, total=isnull(sum(cantidad),0)
 from ventas as v
 inner join titulos as t on t.titulo_id = v.titulo_id
@@ -120,6 +136,12 @@ group by a.almacen_id
 entre abril y septiembre del 2014 por cada almacén. 
 Mostrar nombre de almacén, y total de venta. Si un almacén no
 tiene ventas mostrar en cero. */
+select *
+from ventas as v 
+where year(fecha_orden) = 2014 
+	and MONTH(fecha_orden) between 4 and 9
+	and v.forma_pago = 'Al contado'
+
 select almacen_nombre, total=isnull(sum(cantidad * precio),0)
 from almacenes as al
 left join ventas as v on v.almacen_id = al.almacen_id
@@ -132,10 +154,10 @@ group by al.almacen_id, almacen_nombre
 select almacen_nombre, total=isnull(sum(cantidad * precio),0)
 from ventas as v 
 inner join titulos as t on t.titulo_id = v.titulo_id
-right join almacenes as al on v.almacen_id = al.almacen_id
 	and year(fecha_orden) = 2014 
 	and MONTH(fecha_orden) between 4 and 9
 	and v.forma_pago = 'Al contado'
+right join almacenes as al on v.almacen_id = al.almacen_id
 group by al.almacen_id, almacen_nombre
 
 /*8.10. Informar el monto de regalías a pagar por cada autor, 
@@ -146,17 +168,23 @@ regalía del título y sobre esta la regalía del autor respecto
 a ese libro. */
 select a.autor_nombre, a.autor_apellido
 	,regalias = sum(cantidad * precio * regalias / 100 * porcentaje_regalias / 100)
+--select *
 from autores as a
 inner join titulo_autor as ta on ta.autor_id = a.autor_id
 inner join titulos as t on t.titulo_id = ta.titulo_id
 inner join editoriales as e on e.editorial_id = t.editorial_id
 	and editorial_nombre = 'Binnet & Hardley'
 left join ventas as v on v.titulo_id = ta.titulo_id
-where year(fecha_orden) = 2013
+	and year(fecha_orden) = 2013
 group by a.autor_id, a.autor_nombre, a.autor_apellido
 
-select a.autor_nombre, a.autor_apellido, 
-	regalias = sum(cantidad * precio * regalias / 100 * porcentaje_regalias / 100)
+select *
+from ventas
+where year(fecha_orden) = 2013
+
+select a.autor_nombre, a.autor_apellido, --sum(cantidad * precio),
+	regalias = isnull( sum((cantidad * precio) * t.regalias / 100 * ta.porcentaje_regalias / 100), 0)
+--select *
 from autores as a
 inner join titulo_autor as ta on a.autor_id = ta.autor_id
 inner join titulos as t on t.titulo_id = ta.titulo_id
@@ -168,6 +196,7 @@ group by a.autor_id, a.autor_nombre, a.autor_apellido
 
 select a.autor_nombre, a.autor_apellido, 
 	regalias = sum(cantidad * precio * regalias / 100 * porcentaje_regalias / 100)
+--select *
 from ventas as v
 inner join titulos as t on t.titulo_id = v.titulo_id
 inner join editoriales as e on e.editorial_id = t.editorial_id

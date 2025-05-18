@@ -1,5 +1,7 @@
 USE editorial
 GO
+select *
+from plan_regalias
 -- informar el mínimo porcentaje de plan de regalias
 select min(regalias)
 from plan_regalias
@@ -9,11 +11,11 @@ select max(regalias)
 from plan_regalias
 
 -- informar la sumatoria de planes de regalias
-select sum(regalias)
+select sum(regalias) as suma
 from plan_regalias
 
 -- informar la cantidad de planes de regalias
-select count(regalias)
+select count(regalias) as conteo_regalias, count(*) as conteo_filas
 from plan_regalias
 
 -- informar el porcentaje promedio de planes de regalias
@@ -21,6 +23,10 @@ select avg(regalias), sum(regalias) / count(regalias)
 from plan_regalias
 
 -- informar cuantos porcentajes de plan de regalias existen
+
+select distinct regalias
+from plan_regalias
+
 select count(distinct regalias)
 from plan_regalias
 
@@ -32,6 +38,10 @@ where p.titulo_id = t.titulo_id
 and titulo = 'Is Anger the Enemy?'
 
 -- cuantos empleados hay en cada cargo
+select *
+from empleados
+order by cargo_id
+
 select cargo_id, COUNT(*)
 from empleados
 group by cargo_id
@@ -43,15 +53,13 @@ group by e.cargo_id, cargo_descripcion
 order by COUNT(*) desc
 
 -- informar cuantos empleados fueron contratados cada año
+select * 
+from empleados
+
 SELECT year(fecha_contratacion), COUNT(*)
 FROM empleados
 GROUP BY year(fecha_contratacion)
 
---informar cuantos empleados hay en cada cargo
-select e.cargo_id, COUNT(*)
-from empleados as e, cargos as c
-where e.cargo_id = c.cargo_id
-GROUP BY e.cargo_id
 
 -- informar cuales años se han contratado mas de cuatro empleado
 SELECT year(fecha_contratacion), COUNT(*)

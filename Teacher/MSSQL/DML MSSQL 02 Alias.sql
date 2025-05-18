@@ -13,9 +13,11 @@ SELECT cargo_id as cargo,
 FROM empleados
 WHERE cargo_id > 10
 
-SELECT almacen_nombre, numero_orden, fecha_orden,
+/* Informar las ventas de titulos. Por cada venta mostrar numero de orden,
+	fecha de la operacion, el id del titulo, el titulo , la cantidad,
+	el precio y el total de la operacion */
+SELECT numero_orden, fecha_orden,
 	v.titulo_id, titulo, cantidad, precio,
     total = cantidad * precio
-FROM ventas as v, titulos as t, almacenes as a
+FROM ventas as v, titulos as t
 WHERE v.titulo_id = t.titulo_id
-	and v.almacen_id = a.almacen_id

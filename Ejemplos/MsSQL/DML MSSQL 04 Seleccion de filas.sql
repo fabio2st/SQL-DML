@@ -6,7 +6,6 @@ SELECT *
 FROM descuentos
 WHERE descuento > 5
 
-
 -- obtener los titulos publicados el 12 de junio del 2011
 select *
 from titulos
@@ -26,26 +25,30 @@ WHERE MONTH( fecha_contratacion) = 8
 SELECT *
 FROM empleados
 WHERE YEAR( fecha_contratacion) = 2009
-	or YEAR( fecha_contratacion) = 2013
+	OR YEAR( fecha_contratacion) = 2013
 
-	-- mostrar los empleados contratados entre en el 2009 y el 2013
+-- mostrar los empleados contratados entre el 2009 y el 2013
 SELECT *
 FROM empleados
-WHERE YEAR( fecha_contratacion) BETWEEN 2009 AND2013
+WHERE YEAR( fecha_contratacion) BETWEEN 2009 AND 2013
 
+SELECT *
+FROM empleados
+WHERE YEAR( fecha_contratacion) >= 2009
+	AND YEAR( fecha_contratacion) <= 2013
 -- mostrar los empleados contratados en los últimos 10 años
 SELECT *, YEAR(GETDATE()) - 10
 FROM empleados
-WHERE YEAR( fecha_contratacion) > YEAR(GETDATE()) - 10
+WHERE YEAR( fecha_contratacion) > YEAR(GETDATE()) - 11
 
 -- Obtener los autores contratados
 SELECT *
 FROM autores
-WHERE contratado = 'True'	-- conversión imlícita de la cadena a 1 ('False' = 0)
+WHERE contratado = 'True'	-- conversión implícita de la cadena a 1 ('False' = 0)
 
 SELECT *
 FROM autores
-WHERE contratado = 1
+WHERE contratado = 0
 
 -- obtener los titulos publicados 
 -- entre el 10 y 20 de junio del 2011
@@ -69,7 +72,13 @@ select *
 from titulos
 where precio is not null
 
--- obtener las ventas superiores a $500 o con mas de 50 unidades. 
+-- listar los titulos con sus notas, 
+-- si no tiene nota, mostrar una leyenda "Sin datos"
+SELECT titulo, titulo_id, ISNULL(notas, 'SIN DATOS') AS Notas
+FROM titulos
+
+
+-- obtener las ventas superiores a $1000 o con mas de 50 unidades. 
 -- Informar titulo, almacen id, numero orden, fecha orden, cantidad, precio y total
 select t.titulo, almacen_id, numero_orden, fecha_orden, cantidad, precio,
 	total=precio*cantidad, titulo

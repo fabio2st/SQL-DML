@@ -26,20 +26,23 @@ from autores as a
 inner join titulo_autor as ta on ta.autor_id = a.autor_id
 inner join titulos as t on t.titulo_id = ta.titulo_id
 
--- mostrar los cargos y sus empleados inclusive aquellos que no tienen empleados
+-- mostrar los cargos y sus empleados 
+-- inclusive aquellos que no tienen empleados
+
 select *
-from cargos
+from cargos 
 left outer join empleados on cargos.cargo_id = empleados.cargo_id
 order by apellido
 
 -- como las columnas de la tabla derecha pueden traer nulos operar esas columnas con isnull
-select cargos.cargo_id, cargo_descripcion, isnull(empleado_id,'S.E.') as empleado_id
+select cargos.cargo_id, cargo_descripcion, 
+isnull(empleado_id,'S.E.') as empleado_id, isnull(fecha_contratacion,'20000101')
 from cargos
 left outer join empleados on cargos.cargo_id = empleados.cargo_id
 order by apellido
 
 -- mostrar todos los autores y los títulos que escribieron
--- informar autor id, nombre, paellido, titulo y genero
+-- informar autor id, nombre, apellido, titulo y genero
 -- los que no tengan escrito un titulo aclararlo con el mensaje: "Sin titulos"
 select a.autor_id, autor_nombre, autor_apellido, 
 isnull(titulo,'Sin titulos') as titulo, isnull(genero,'') as genero

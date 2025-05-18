@@ -4,6 +4,7 @@ de venta”. */
 USE editorial
 go
 SELECT v.titulo_id, titulo
+	--, cantidad, precio
 	, 'Total de venta' = cantidad * precio
 FROM ventas as v, titulos as t
 WHERE v.titulo_id = t.titulo_id

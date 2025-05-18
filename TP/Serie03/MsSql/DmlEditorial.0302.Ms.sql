@@ -5,6 +5,7 @@ use editorial
 go
 
 select nombre, inicial_segundo_nombre, apellido, editorial_nombre
+	, em.editorial_id, ed.editorial_id
 FROM empleados as em, editoriales as ed
 WHERE em.editorial_id = ed.editorial_id
 	AND (ed.editorial_nombre = 'Lucerne Publishing'

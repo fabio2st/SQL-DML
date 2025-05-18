@@ -7,12 +7,15 @@ Ordenar por fecha de orden. */
 
 select *
 from ventas
+WHERE forma_pago LIKE '%30 días%'
+	or forma_pago LIKE '%60 días%'
 order by almacen_id, fecha_orden
 
 
-SELECT almacen_id,'Fecha orden' = MAX(fecha_orden), forma_pago
+SELECT almacen_id,'Fecha orden' = MAX(fecha_orden), max(forma_pago)
 FROM ventas
 --WHERE ventas.almacen_id = almacenes.almacen_id
-WHERE forma_pago LIKE '%[30,60] días%'
-GROUP BY almacen_id, forma_pago
+WHERE forma_pago LIKE '%30 días%'
+	or forma_pago LIKE '%60 días%'
+GROUP BY almacen_id
 ORDER BY 'Fecha orden'

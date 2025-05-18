@@ -5,4 +5,4 @@ go
 
 select *
 from titulos 
-where titulo NOT LIKE '%computer%'
+where titulo  LIKE '%computer%'

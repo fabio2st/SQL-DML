@@ -8,8 +8,8 @@ go
 
 SELECT titulo, genero
 FROM titulos
-WHERE fecha_publicacion between '20110101' and '20111231'
---where year(fecha_publicacion) = 2011
+--WHERE fecha_publicacion between '20110101' and '20111231'
+where year(fecha_publicacion) = 2011
 and genero <> 'business'
 and genero <>  'psychology'
 and genero <>  'trad_cook'

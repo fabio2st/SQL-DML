@@ -1,5 +1,12 @@
 use editorial
 go
+
+SELECT autor_nombre, genero
+FROM titulos,autores a,titulo_autor
+WHERE a.autor_id = titulo_autor.autor_id 
+AND titulos.titulo_id = titulo_autor.titulo_id
+order by autor_nombre
+
 /* Informar los autores que hayan escrito varios géneros de títulos. 
 Mostrar nombre y cantidad de géneros ordenados 
 por esta última columna empezando por el mayor*/

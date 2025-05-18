@@ -5,4 +5,6 @@ USE editorial
 go
 SELECT titulo, -- precio, regalias, 
 	'Regalías x cada 1000 unidades' = (regalias * precio / 100) * 1000
+	, 'Regalías x cada 1000 unidades' = (regalias * precio) * 10
+	, 'Regalías x cada 1000 unidades' = regalias * precio * .01 * 1000
 FROM titulos

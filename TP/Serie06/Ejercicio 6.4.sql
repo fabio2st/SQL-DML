@@ -3,6 +3,8 @@ go
 
 select *
 from ventas
+WHERE YEAR(fecha_orden) = '2014'
+AND forma_pago LIKE '30 días'
 
 -- Obtener el total de ventas realizadas a 30 días en el año 2014
 SELECT 'Total ventas 30 dias año 2014' = SUM(cantidad) 

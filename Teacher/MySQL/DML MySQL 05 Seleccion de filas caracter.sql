@@ -19,7 +19,7 @@ WHERE inicial_segundo_nombre <> '';
 /* Informar los cargos de directores de diferentes areas */
 select *
 from cargos
-where cargo_descripcion LIKE 'director%';
+where cargo_descripcion LIKE 'directo%';
 
 /* informar los cargos de 'compras' */
 select *
@@ -72,7 +72,7 @@ where empleado_id LIKE '_[-,A-P]%'
 
 /* informar los empleados que en el segundo caracter
 del id tenga un guion o entre 'A' y 'P' 
-y el tercero no sea 'C' o entre 'Q' y 'Z' */
+y el tercero no sea 'C' */
 select *
 from empleados
 where empleado_id LIKE '_[-,A-P][^C]%'

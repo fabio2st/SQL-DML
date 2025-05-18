@@ -28,16 +28,16 @@ inner join titulos as t on t.titulo_id = ta.titulo_id
 select *
 from cargos
 left outer join empleados on cargos.cargo_id = empleados.cargo_id
-order by apellido
+order by apellido;
 
--- como las columnas de la tabla derecha pueden traer nulos operar esas columnas con isnull
-select cargos.cargo_id, cargo_descripcion, isnull(empleado_id,'S.E.') as empleado_id
+-- como las columnas de la tabla derecha pueden traer nulos operar esas columnas con ifnull
+select cargos.cargo_id, cargo_descripcion, ifnull(empleado_id,'S.E.') as empleado_id
 from cargos
 left outer join empleados on cargos.cargo_id = empleados.cargo_id
 order by apellido
 
 -- inviertiendo el orden de las tablas
-select cargos.cargo_id, cargo_descripcion, isnull(empleado_id,'S.E.') as empleado_id
+select cargos.cargo_id, cargo_descripcion, ifnull(empleado_id,'S.E.') as empleado_id
 from empleados
 right outer join cargos on cargos.cargo_id = empleados.cargo_id
 order by apellido
@@ -46,7 +46,7 @@ order by apellido
 -- informar autor id, nombre, paellido, titulo y genero
 -- los que no tengan escrito un titulo aclararlo con el mensaje: "Sin titulos"
 select a.autor_id, autor_nombre, autor_apellido, 
-isnull(titulo,'Sin titulos') as titulo, isnull(genero,'') as genero
+ifnull(titulo,'Sin titulos') as titulo, ifnull(genero,'') as genero
 from autores as a
 left join titulo_autor as ta on ta.autor_id = a.autor_id
 left join titulos as t on t.titulo_id = ta.titulo_id
@@ -54,7 +54,7 @@ left join titulos as t on t.titulo_id = ta.titulo_id
 -- mostrar todos los titulos y sus autores si existiesen
 -- informar titulo, genero, autor id, nombre y apellido
 select titulo as titulo, genero, 
-	isnull(a.autor_id,'') as autor_id, isnull(autor_nombre,'') autor_nombre, isnull(autor_apellido,'') autor_apellido
+	ifnull(a.autor_id,'') as autor_id, ifnull(autor_nombre,'') autor_nombre, ifnull(autor_apellido,'') autor_apellido
 from autores as a
 right join titulo_autor as ta on ta.autor_id = a.autor_id
 right join titulos as t on t.titulo_id = ta.titulo_id
@@ -66,8 +66,8 @@ inner join editoriales d on d.editorial_id = e.editorial_id
 right outer join cargos c on c.cargo_id = e.cargo_id
 
 -- Informar todos los autores y todos los títulos
-select isnull(a.autor_id,'-') as autor_id, isnull(autor_nombre,'') autor_nombre, isnull(autor_apellido,'') autor_apellido, 
-	isnull(titulo,'') as titulo, isnull(genero,'') genero
+select ifnull(a.autor_id,'-') as autor_id, ifnull(autor_nombre,'') autor_nombre, ifnull(autor_apellido,'') autor_apellido, 
+	ifnull(titulo,'') as titulo, ifnull(genero,'') genero
 from autores as a
 full join titulo_autor as ta on ta.autor_id = a.autor_id
 full join titulos as t on t.titulo_id = ta.titulo_id

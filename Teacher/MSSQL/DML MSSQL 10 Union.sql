@@ -8,7 +8,7 @@ SELECT nombre, apellido, cargo_descripcion AS Rol
 FROM empleados AS e
 INNER JOIN cargos AS c ON c.cargo_id = e.cargo_id
 UNION
-SELECT autor_nombre, autor_apellido, 'Autor'
+SELECT autor_nombre, autor_apellido, 'Autor' as algo
 FROM autores
 ORDER BY apellido, nombre
 

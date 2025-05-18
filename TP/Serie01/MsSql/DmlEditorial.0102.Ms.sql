@@ -2,7 +2,7 @@
 y la descripción del cargo que tienen. */
 USE editorial
 go
-SELECT e.*, c.cargo_descripcion
+SELECT e.*, cargo_descripcion
 FROM empleados as e, cargos as c
 WHERE e.cargo_id = c.cargo_id
 

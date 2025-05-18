@@ -31,7 +31,7 @@ where cargo_descripcion LIKE '%compras'
 por convención se usa la palabra 'de' */
 select *
 from cargos
-where cargo_descripcion LIKE '%de%'
+where cargo_descripcion LIKE '% de %'
 
 /* informar los cargos que tengan 'comercial' */
 select *
